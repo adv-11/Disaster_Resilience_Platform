@@ -66,3 +66,4 @@ if st.button("Donate"):
         save_donation(name, email, amount, comment)
     else:
         st.error("Please fill in all required fields.")
+
