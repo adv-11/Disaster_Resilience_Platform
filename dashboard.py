@@ -53,7 +53,7 @@ def create_donation_pie_chart(total_donations, goal_amount):
 
 # Streamlit App Layout
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Donation Page", "Dashboard"])
+page = st.sidebar.radio("Go to", ["Dashboard" , "Donation Page", ])
 
 if page == "Donation Page":
     st.title("Disaster Relief Donation Platform")
@@ -93,7 +93,7 @@ elif page == "Dashboard":
 
     # Block A: Donations Info
     with col2:
-        st.write("### Block A: Donation Info")
+        st.write("### Donations")
         # Fetch donation data
         donations = fetch_donations()
         total_donations = calculate_total_donations(donations)
@@ -106,8 +106,12 @@ elif page == "Dashboard":
         fig = create_donation_pie_chart(total_donations, goal_amount)
         st.plotly_chart(fig, use_container_width=True)
 
-        st.write(f"**Total Donations Raised:** ${total_donations}")
-        st.write(f"**Goal Amount:** ${goal_amount}")
+        st.write(f"- **Total Donations Raised:** ${total_donations}")
+        st.write(f"- **Goal Amount:** ${goal_amount}")
+        st.write(f"- **Number of Donations:** {len(donations)}")
+        st.write(f"- **Goal Achieved:** {total_donations / goal_amount:.2%}")
+        st.write(f"- **Top Donor:** {max(donations, key=lambda x: x['amount'])['name'] if donations else 'N/A'}")
+
 
     # Block B: Placeholder
     with col1:
