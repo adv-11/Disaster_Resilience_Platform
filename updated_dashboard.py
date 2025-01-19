@@ -2,15 +2,15 @@ import streamlit as st
 import requests
 from ibmcloudant.cloudant_v1 import CloudantV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
-# import matplotlib.pyplot as plt
-import os 
-# from ibm_cloud_sdk_core import ApiException
-from dotenv import load_dotenv
-load_dotenv()
+import os
+import json
+import re
 import plotly.graph_objects as go
+from dotenv import load_dotenv
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_watson.natural_language_understanding_v1 import Features, KeywordsOptions
-import re
+
+load_dotenv()
 
 # IBM Cloudant Credentials
 CLOUDANT_API_KEY = os.environ.get("CLOUDANT_API_KEY")
@@ -27,23 +27,28 @@ NLU_URL = os.environ.get("NLU_URL")
 # Initialize IBM Watson NLU client
 nlu_authenticator = IAMAuthenticator(NLU_API_KEY)
 nlu = NaturalLanguageUnderstandingV1(
-    version='2021-08-01',
+    version="2021-08-01",
     authenticator=nlu_authenticator
 )
 nlu.set_service_url(NLU_URL)
 
 # Fetch real-time data using News API
 NEWS_API_KEY = os.environ.get("NEWS_API_KEY")
+
+
+@st.cache_data
 def fetch_web_data(query):
     url = f"https://newsapi.org/v2/everything?q={query}&apiKey={NEWS_API_KEY}"
     response = requests.get(url)
-    articles = response.json().get('articles', [])
-    return [(article['title'], article['content']) for article in articles if article.get('content')]
+    articles = response.json().get("articles", [])
+    return [(article["title"], article["content"]) for article in articles if article.get("content")]
+
 
 # Function to clean HTML tags from the content
 def clean_html(text):
     clean = re.compile("<.*?>")
     return re.sub(clean, "", text)
+
 
 # Function to analyze text and extract keywords
 def analyze_summary(title, text):
@@ -54,18 +59,20 @@ def analyze_summary(title, text):
                 keywords=KeywordsOptions(emotion=False, sentiment=False, limit=5)
             )
         ).get_result()
-        
-        keywords = [keyword['text'] for keyword in response['keywords']]
-        
+
+        keywords = [keyword["text"] for keyword in response["keywords"]]
+
         # Constructing a summary from title and extracted keywords
         summary = f"**{title}**\n\n**Key Topics**: {', '.join(keywords)}"
-        
+
         return summary
     except Exception as e:
         st.error(f"Error analyzing summary: {e}")
         return None
 
+
 # Function to create a donation pie chart
+@st.cache_data
 def fetch_donations():
     try:
         response = client.post_all_docs(
@@ -77,9 +84,11 @@ def fetch_donations():
         st.error(f"Error fetching donation data: {e}")
         return []
 
+
 # Calculate the total donation amount
 def calculate_total_donations(donations):
     return sum(donation["amount"] for donation in donations if "amount" in donation)
+
 
 # Create a pie chart for donation progress
 def create_donation_pie_chart(total_donations, goal_amount):
@@ -100,9 +109,67 @@ def create_donation_pie_chart(total_donations, goal_amount):
     )
     return fig
 
+
+# Visualization Functions
+def create_pie_chart(data, settings):
+    categories = [item[settings["categoriesField"]] for item in data]
+    values = [item[settings["valuesField"]] for item in data]
+
+    fig = go.Figure(
+        data=[
+            go.Pie(
+                labels=categories,
+                values=values,
+                hole=0.3,
+                textinfo="label+percent",
+                marker=dict(colors=["orange", "red", "blue", "green", "purple"])
+            )
+        ]
+    )
+    fig.update_layout(title="Pie Chart: Acres Burned by County")
+    return fig
+
+
+def create_multiseries_chart(data, settings):
+    fig = go.Figure()
+
+    for series in settings["multiSeriesFields"]:
+        fig.add_trace(
+            go.Bar(
+                x=[item[settings["x"]] for item in data],
+                y=[item[series["name"]] for item in data],
+                name=series["name"]
+            )
+        )
+
+    fig.update_layout(
+        title="Multiseries Chart: Acres Burned by County",
+        barmode="group",
+        xaxis_title=settings["x"],
+        yaxis_title="Value"
+    )
+    return fig
+
+
+# Load visualization settings
+with open("ibm_autoML_visualizations\chart_setting_pie.json", "r") as pie_file:
+    pie_settings = json.load(pie_file)
+
+with open("ibm_autoML_visualizations\chart_setting_multiseries.json", "r") as multiseries_file:
+    multiseries_settings = json.load(multiseries_file)
+
+# Sample data for visualization
+sample_data = [
+    {"Counties": "County A", "AcresBurned": 5000},
+    {"Counties": "County B", "AcresBurned": 10000},
+    {"Counties": "County C", "AcresBurned": 7000},
+    {"Counties": "County D", "AcresBurned": 3000},
+    {"Counties": "County E", "AcresBurned": 8000},
+]
+
 # Streamlit App Layout
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Dashboard", "Donation Page"])
+page = st.sidebar.radio("Go to", ["Dashboard", "Donation Page", "Visualization"])
 
 if page == "Donation Page":
     st.title("Disaster Relief Donation Platform")
@@ -117,7 +184,6 @@ if page == "Donation Page":
     # Submit donation
     if st.button("Donate"):
         if name and email and amount > 0:
-            # Create a donation document
             try:
                 donation_document = {
                     "name": name,
@@ -136,18 +202,16 @@ elif page == "Dashboard":
     st.title("Dashboard")
 
     # Divide the page into 4 blocks
-    col1, col2 = st.columns(2)  # Top Row: Block A (col2) and Block B (col1)
-    col3, col4 = st.columns(2)  # Bottom Row: Block C (col3) and Block D (col4)
+    col1, col2 = st.columns(2)
+    col3, col4 = st.columns(2)
 
     # Block A: Donations Info
     with col2:
         st.write("### Donations")
-        # Fetch donation data
         donations = fetch_donations()
         total_donations = calculate_total_donations(donations)
-        goal_amount = 100  # Set the donation goal amount
+        goal_amount = 100
 
-        # Display donation progress
         fig = create_donation_pie_chart(total_donations, goal_amount)
         st.plotly_chart(fig, use_container_width=True)
 
@@ -167,8 +231,6 @@ elif page == "Dashboard":
 
         query = "LA Wild Fires"
         st.info("Fetching and summarizing LA Wildfires news...")
-
-        # Fetch and summarize news articles
         web_data = fetch_web_data(query)
 
         if web_data:
@@ -186,3 +248,16 @@ elif page == "Dashboard":
     # Block D: Placeholder
     with col4:
         st.write("### Block D: Placeholder")
+
+elif page == "Visualization":
+    st.title("Data Visualization")
+
+    # Pie Chart Visualization
+    st.subheader("Pie Chart: Acres Burned by County")
+    pie_chart = create_pie_chart(sample_data, pie_settings)
+    st.plotly_chart(pie_chart, use_container_width=True)
+
+    # Multiseries Chart Visualization
+    st.subheader("Multiseries Chart: Acres Burned by County")
+    multiseries_chart = create_multiseries_chart(sample_data, multiseries_settings)
+    st.plotly_chart(multiseries_chart, use_container_width=True)

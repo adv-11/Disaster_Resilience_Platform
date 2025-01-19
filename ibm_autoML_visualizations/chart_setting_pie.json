@@ -1,0 +1,7 @@
+{
+    "type": "pie",
+    "categoriesField": "Counties",
+    "summaryMethod": "sum",
+    "valuesField": "AcresBurned",
+    "__version": "2.9"
+}

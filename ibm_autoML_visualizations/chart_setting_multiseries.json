@@ -1,0 +1,11 @@
+{
+    "type": "multiseries",
+    "x": "Counties",
+    "multiSeriesFields": [
+        {
+            "name": "AcresBurned",
+            "type": "bar"
+        }
+    ],
+    "__version": "2.9"
+}
