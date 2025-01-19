@@ -18,6 +18,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from datetime import datetime, timedelta
+from googlesearch import search
 
 
 load_dotenv()
@@ -52,6 +53,8 @@ def fetch_web_data(query):
     response = requests.get(url)
     articles = response.json().get("articles", [])
     return [(article["title"], article["content"]) for article in articles if article.get("content")]
+
+# Function to fetch NGO data
 
 
 # Function to clean HTML tags from the content
@@ -208,6 +211,8 @@ def filter_recent_entries(entries, months=3):
     return recent_entries
 
 
+
+
 # Load visualization settings
 with open("ibm_autoML_visualizations\chart_setting_pie.json", "r") as pie_file:
     pie_settings = json.load(pie_file)
@@ -263,7 +268,7 @@ elif page == "Dashboard":
 
     # Block A: Donations Info
     with col2:
-        st.write("### Donations")
+        st.markdown("### 💰 Donations ")
         donations = fetch_donations()
         total_donations = calculate_total_donations(donations)
         goal_amount = 100
@@ -277,7 +282,7 @@ elif page == "Dashboard":
         st.write(f"- **Goal Achieved:** {total_donations / goal_amount:.2%}")
         st.write(f"- **Top Donor:** {max(donations, key=lambda x: x['amount'])['name'] if donations else 'N/A'}")
 
-    # Block B: Placeholder
+    # Block B: Global Affected Areas & Disasters
     with col1:
         st.markdown("### 🗺️ Global Affected Areas & Disasters")
         m = folium.Map(location=[20.0, 0.0], zoom_start=2)
@@ -293,8 +298,7 @@ elif page == "Dashboard":
         disaster_data = fetch_disaster_data(geojson_filepath)
         if 'features' in disaster_data:
             recent_disaster_data = filter_recent_entries(disaster_data['features'])
-            #wildfire_data = filter_wildfire_entries(disaster_data['features'])
-
+            
             for event in recent_disaster_data:
                 properties = event['properties']
                 geometry = event['geometry']
@@ -316,8 +320,7 @@ elif page == "Dashboard":
 
     # Block C: News Summary and Sentiment
     with col3:
-        st.write("### LA Wildfires News Summary")
-
+        st.markdown("### 📰 LA Wildfires News Summary")
         query = "LA Wild Fires"
         st.info("Fetching and summarizing LA Wildfires news...")
         web_data = fetch_web_data(query)
@@ -334,9 +337,24 @@ elif page == "Dashboard":
         else:
             st.warning("No data found for the query.")
 
-    # Block D: Placeholder
+    # Block D: Live Updates/Interactive Graph (New Section)
     with col4:
-        st.write("### Block D: Placeholder")
+        st.markdown("### NGOs Supporting California Wildfires")
+        query = "NGOs in California"
+        st.info("Fetching and summarizing NGO data...")
+        ngo_data = []
+
+        if ngo_data:
+            for ngo in ngo_data:
+                st.subheader(f"NGO: {ngo['name']}")
+                st.write(f"**Summary:** {ngo['summary']}")
+                st.write(f"**Contact Info:** {ngo['contact']}")
+                st.write(f"**Link:** [Visit Website]({ngo['link']})")
+        else:
+            st.write("No NGO data available at the moment.")
+
+
+
 
 elif page == "Visualization":
     st.title("Data Visualization")
