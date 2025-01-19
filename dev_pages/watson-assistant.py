@@ -18,8 +18,8 @@ from ibm_watsonx_ai import Credentials
 
 credentials = Credentials(
                    url = "https://api.au-syd.assistant.watson.cloud.ibm.com/instances/60c760f5-7751-4b31-9087-bd8f5218a54b",
-                   username = "advait_shinde_comp@moderncoe.edu.in",
-                   password = "2/Atomandjerry",
+                   username = "...",
+                   password = "...",
                    instance_id = "openshift",
                    version = "5.1",
                    bedrock_url = "https://bedrock.au-syd.assistant.watson.cloud.ibm.com"
