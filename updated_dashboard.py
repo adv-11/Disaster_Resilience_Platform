@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 from dotenv import load_dotenv
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_watson.natural_language_understanding_v1 import Features, KeywordsOptions
+import pandas as pd
 
 load_dotenv()
 
@@ -159,13 +160,12 @@ with open("ibm_autoML_visualizations\chart_setting_multiseries.json", "r") as mu
     multiseries_settings = json.load(multiseries_file)
 
 # Sample data for visualization
-sample_data = [
-    {"Counties": "County A", "AcresBurned": 5000},
-    {"Counties": "County B", "AcresBurned": 10000},
-    {"Counties": "County C", "AcresBurned": 7000},
-    {"Counties": "County D", "AcresBurned": 3000},
-    {"Counties": "County E", "AcresBurned": 8000},
-]
+# Load data from CSV file
+data_file_path = "datasets\California_Fire_Incidents.csv"
+data_df = pd.read_csv(data_file_path)
+
+# Convert DataFrame to list of dictionaries
+sample_data = data_df.to_dict(orient="records")
 
 # Streamlit App Layout
 st.sidebar.title("Navigation")
