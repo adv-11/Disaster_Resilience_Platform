@@ -17,7 +17,7 @@ from ibm_watsonx_ai import APIClient
 from ibm_watsonx_ai import Credentials
 
 credentials = Credentials(
-                   url = "https://api.au-syd.assistant.watson.cloud.ibm.com/instances/60c760f5-7751-4b31-9087-bd8f5218a54b",
+                   url = "...",
                    username = "...",
                    password = "...",
                    instance_id = "openshift",
