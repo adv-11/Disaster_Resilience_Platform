@@ -29,6 +29,9 @@ st.set_page_config(layout="wide")
 
 #Navigation bar
 pg = st.navigation(pages=[dashboard, donations, affected_areas, visualizations])
+
+st.sidebar.text("Navigation")
+
 pg.run()
 
 

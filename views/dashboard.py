@@ -19,7 +19,7 @@ col3, col4 = st.columns([1, 1])  # Bottom row
 # Section 1: Affected Areas (Top Left)
 with col1:
     st.markdown("### 🌍 Affected Areas")
-    m = folium.Map(location=[20.0, 0.0], zoom_start=2)
+    m = folium.Map(location=[37.0902, -100.7129], zoom_start=3.5)
 
     # Download the latest GeoJSON file if it doesn't exist
     geojson_url = "https://www.gdacs.org/Alerts/default.aspx"
