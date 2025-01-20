@@ -228,13 +228,16 @@ data_df = pd.read_csv(data_file_path)
 # Convert DataFrame to list of dictionaries
 sample_data = data_df.to_dict(orient="records")
 
+st.set_page_config(page_title="Global Disasters Dashboard", layout="wide")
+
 # Streamlit App Layout
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Go to", ["Dashboard", "Donation Page", "Visualization"])
+page = st.sidebar.radio("Go to", ["Dashboard","Affected Areas", "Donation Page", "Visualization"])
 
 if page == "Donation Page":
     st.title("Disaster Relief Donation Platform")
     st.subheader("Contribute to make a difference!")
+    st.markdown("---")
 
     # Donation form
     name = st.text_input("Your Name")
@@ -260,7 +263,8 @@ if page == "Donation Page":
             st.error("Please fill in all required fields.")
 
 elif page == "Dashboard":
-    st.title("Dashboard")
+    st.title("🌎 Global Disasters Dashboard")
+    st.markdown("---")
 
     # Divide the page into 4 blocks
     col1, col2 = st.columns(2)
@@ -318,6 +322,9 @@ elif page == "Dashboard":
 
         st_folium(m, width=700, height=500)
 
+        if st.button("Learn More"):
+            st.write("Learn more about the affected areas and disasters.")
+
     # Block C: News Summary and Sentiment
     with col3:
         st.markdown("### 📰 LA Wildfires News Summary")
@@ -358,6 +365,7 @@ elif page == "Dashboard":
 
 elif page == "Visualization":
     st.title("Data Visualization")
+    st.markdown("---")
 
     # Pie Chart Visualization
     st.subheader("Pie Chart: Acres Burned by County")
@@ -368,3 +376,9 @@ elif page == "Visualization":
     st.subheader("Multiseries Chart: Acres Burned by County")
     multiseries_chart = create_multiseries_chart(sample_data, multiseries_settings)
     st.plotly_chart(multiseries_chart, use_container_width=True)
+
+
+elif page == "Affected Areas":
+    st.title("Affected Areas")
+    st.markdown("---")
+
