@@ -106,7 +106,7 @@ else:
 st_folium(m, width="100%", height=500 , key="affected_areas_map")
 
 
-# --------------------------------------------------------------------------------------------------------------
+
 #Fetch latest news about California fires
 st.markdown("---")
 st.markdown("### 📰 Latest News About California Fires")
@@ -133,7 +133,7 @@ if news_articles:
             st.rerun()
 
 
-# --------------------------------------------------------------------------------------------------------------
+
 # Search for more news
 st.markdown("---")
 query = st.text_input("Search for more news:")

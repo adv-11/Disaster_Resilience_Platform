@@ -167,7 +167,7 @@ with col2:
 # Section 3: Latest News (Bottom Left)
 with col3:
     st.header("📰 LA Wildfires News Summary")
-    
+
     query = "LA Wild Fires"
     st.info("Fetching and summarizing LA Wildfires news...")
     web_data = fetch_web_data(query)
@@ -185,7 +185,7 @@ with col3:
         st.warning("No data found for the query.")
 
     #Button for more news updates
-    address = st.text_input("Enter your address for more news updates:")
+    address = st.text_input("Enter a region for more news updates:")
 
     if st.button("Get Latest News"):
         if address:
