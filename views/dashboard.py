@@ -4,7 +4,8 @@ import json
 import streamlit as st
 import folium
 from streamlit_folium import st_folium
-from views.affected_areas import download_geojson, fetch_disaster_data, filter_recent_entries, plot_disaster_events
+from views.affected_areas import download_geojson, fetch_disaster_data, filter_recent_entries, plot_disaster_events, get_latest_news
+
 
 
 # Dashboard Title
@@ -47,6 +48,33 @@ with col2:
 # Section 3: Ongoing Fundraisers (Bottom Left)
 with col3:
     st.markdown("### Latest News")
+    address = st.text_input("Enter your address for news updates:")
+
+    if st.button("Get Latest News"):
+        if address:
+            st.session_state.address = address
+            st.session_state.more_news_articles = get_latest_news(f"Latest news in {address}")
+            st.session_state.more_news_count = 3
+
+    if 'address' in st.session_state and 'more_news_articles' in st.session_state:
+        more_news_articles = st.session_state.more_news_articles
+        if more_news_articles:
+            st.success("News fetched successfully!")
+            for article in more_news_articles[:st.session_state.more_news_count]:
+                title = article['title']
+                description = article['description']
+                url = article['url']
+                st.markdown(f"- [{title}]({url})")
+                st.write(description)
+
+            if len(more_news_articles) > st.session_state.more_news_count:
+                if st.button("See more", key="more_news"):
+                    st.session_state.more_news_count += 3
+                    st.rerun()
+        else:
+            st.error("No news articles found for the given address.")
+        
+
 
 # Section 4: Contact Information (Bottom Right)
 with col4:
