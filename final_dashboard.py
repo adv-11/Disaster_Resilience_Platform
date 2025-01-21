@@ -260,7 +260,7 @@ if page == "Donation Page":
             st.error("Please fill in all required fields.")
 
 elif page == "Dashboard":
-    st.title("Dashboard")
+    st.title("Disaster Resilience Platform")
 
     # Divide the page into 4 blocks
     col1, col2 = st.columns(2)
@@ -357,7 +357,7 @@ elif page == "Dashboard":
 
 
 elif page == "Visualization":
-    st.title("Data Visualization")
+    st.title("Analytics and Visualization")
 
     # Pie Chart Visualization
     st.subheader("Pie Chart: Acres Burned by County")
