@@ -1,0 +1,15 @@
+{
+    "type": "pie",
+    "categoriesField": {
+        "name": "FuelType",
+        "values": [
+            "Grass",
+            "timber",
+            "Vegetation",
+            "Brush",
+            "grass and brush"
+        ]
+    },
+    "summaryMethod": "count",
+    "__version": "2.9"
+}

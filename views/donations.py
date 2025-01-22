@@ -32,11 +32,7 @@ if st.button("Donate"):
                 "name": name,
                 "email": email,
                 "amount": amount,
-<<<<<<< HEAD
                 "comment": comment
-=======
-                    "comment": comment
->>>>>>> 30c15c8727ae6cea1464f203876e6f04174b55ff
             }
             client.post_document(db=CLOUDANT_DB_NAME, document=donation_document)
             st.success(f"Thank you, {name}! Your donation of ${amount} has been recorded.")

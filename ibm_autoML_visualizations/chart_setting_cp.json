@@ -1,0 +1,7 @@
+{
+    "type": "cp",
+    "seriesFields": [
+        "Counties"
+    ],
+    "__version": "2.9"
+}

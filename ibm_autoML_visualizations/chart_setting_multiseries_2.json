@@ -1,0 +1,15 @@
+{
+    "type": "multiseries",
+    "x": "ArchiveYear",
+    "multiSeriesFields": [
+        {
+            "name": "Injuries",
+            "type": "bar"
+        },
+        {
+            "name": "CrewsInvolved",
+            "type": "bar"
+        }
+    ],
+    "__version": "2.9"
+}
