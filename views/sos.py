@@ -19,13 +19,18 @@ def fetch_sos_data():
     data = ref.get()
     if data:  # Check if data exists
         records = []
+        count = 0
         for key, value in data.items():
+            if count < 2:
             # Extract and store the relevant fields in a list of dictionaries
-            records.append({
-                "Latitude": float(value["Latitude"]),
-                "Longitude": float(value["Longitude"]),
-                "Message": value["Message"],
-            })
+                records.append({
+                    "Latitude": float(value["Latitude"]),
+                    "Longitude": float(value["Longitude"]),
+                    "Message": value["Message"],
+                })
+                count += 1
+            else:
+                break
         return pd.DataFrame(records)  # Convert the list of dictionaries to a DataFrame
     return pd.DataFrame(columns=["Latitude", "Longitude", "Message"])  # Return an empty DataFrame if no data
 
