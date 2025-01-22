@@ -1,18 +1,26 @@
 import os
 import re
+import time
+import json
 from dotenv import load_dotenv
 import requests
 import streamlit as st
 import plotly.graph_objects as go
 import folium
 from streamlit_folium import st_folium
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from datetime import datetime, timedelta
 from ibmcloudant.cloudant_v1 import CloudantV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from ibm_watson import NaturalLanguageUnderstandingV1
 from ibm_watson.natural_language_understanding_v1 import Features, KeywordsOptions
-from views.affected_areas import download_geojson, fetch_disaster_data, filter_recent_entries, plot_disaster_events, get_latest_news
 
 load_dotenv()
+
+
 
 # IBM Cloudant Credentials
 CLOUDANT_API_KEY = os.environ.get("CLOUDANT_API_KEY")
@@ -28,6 +36,68 @@ NLU_URL = os.environ.get("NLU_URL")
 
 # Fetch real-time data using News API
 NEWS_API_KEY = os.environ.get("NEWS_API_KEY")
+
+# Function to download the latest GeoJSON file using Selenium
+def download_geojson(url, download_dir):
+    options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": download_dir}
+    options.add_experimental_option("prefs", prefs)
+    options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver.get(url)
+    
+    # Execute the JavaScript to download the file
+    driver.execute_script("downloadResult();")
+    
+    # Wait for the download to complete
+    time.sleep(10)
+    
+    driver.quit()
+
+# Function to fetch disaster data from a GeoJSON file
+def fetch_disaster_data(filepath):
+    with open(filepath, 'r') as f:
+        data = json.load(f)
+    return data
+
+# Function to filter entries from the last 3 months
+def filter_recent_entries(entries, months=3):
+    recent_entries = []
+    now = datetime.now()
+    cutoff_date = now - timedelta(days=months*30)  # Approximate 3 months
+    for entry in entries:
+        if 'fromdate' in entry['properties']:
+            entry_date = datetime.strptime(entry['properties']['fromdate'], '%Y-%m-%dT%H:%M:%S')
+            if entry_date >= cutoff_date:
+                recent_entries.append(entry)
+    return recent_entries
+
+def plot_disaster_events(m, disaster_data):
+    for event in disaster_data:
+        properties = event['properties']
+        geometry = event['geometry']
+        if geometry['type'] == 'Point':
+            lat, lon = geometry['coordinates'][1], geometry['coordinates'][0]
+            title = properties['eventname']
+            description = properties['description']
+            fromdate = properties['fromdate']
+            more_info_url = properties['url'].get('report', None)
+            if more_info_url:
+                popup_text = f"{title}: {description}<br>Date: {fromdate}<br><a href='{more_info_url}' target='_blank'>More Info</a>"
+            else:
+                popup_text = f"{title}: {description}<br>Date: {fromdate}"
+            folium.Marker([lat, lon], popup=popup_text).add_to(m)     
+
+# Function to get latest news about California fires
+def get_latest_news(query):
+    url = f"https://newsapi.org/v2/everything?q={query}&apiKey={NEWS_API_KEY}"
+    response = requests.get(url)
+    news_data = response.json()
+    return news_data['articles']
 
 @st.cache_data
 def fetch_web_data(query):
