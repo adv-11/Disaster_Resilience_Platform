@@ -4,6 +4,7 @@ folium
 python-dotenv
 streamlit-folium
 selenium
+webdriver-manager
 huggingface-hub
 langchain-community
 langchain
