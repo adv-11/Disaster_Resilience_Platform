@@ -9,12 +9,6 @@ During disasters, donations are often mismanaged or lack transparency, causing m
 
 An AI-powered disaster management platform is needed to identify disasters and assess risk zones, coordinate rescue and relief efforts in real-time, and provide post-disaster recovery assistance.​
 
-​
-
-​
-
-​
-
 ## Documentation
 
 ### Overview
@@ -30,7 +24,7 @@ The Disaster Resilience Platform is a web application designed to provide real-t
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/Disaster_Resilience_Platform.git
+   git clone https://github.com/adv-11/Disaster_Resilience_Platform.git
    cd Disaster_Resilience_Platform
    ```
 
@@ -49,13 +43,45 @@ The Disaster Resilience Platform is a web application designed to provide real-t
 
 4. **Set up environment variables:**
    Create a [.env](http://_vscodecontentref_/1) file in the root directory of the project and add the following variables:
+
    ```env
-   NEWS_API_KEY=your_news_api_key
+
+    WATSON_API_KEY = ""
+
+    NEWS_API_KEY= ""
+    CLOUDANT_API_KEY = ""
+    CLOUDANT_URL = ""
+    CLOUDANT_DB_NAME = ""
+    TAVILY_API_KEY = ""
+    NLU_API_KEY = ""
+    NLU_URL = ""
+
+    TWITTER_API_KEY = ""
+
+    TWITTER_API_SECRET =' '
+
+    TWITTER_BEARER_TOKEN = ''
+
+    TWITTER_ACCESS_TOKEN = ''
+
+    TWITTER_ACCESS_TOKEN_SECRET = ''
+
+    NASA_API_KEY = ''
+
+    # for watson granite models
+
+    apikey = ''
+
+    watson_url = ''
+
+    project_id = ''
+
+    HF_TOKEN = ''
    ```
 
 ### Running the Application
 
-1. **Run the Streamlit application:**
+5. **Run the Streamlit application:**
    ```sh
    streamlit run app.py
    ```
@@ -63,14 +89,13 @@ The Disaster Resilience Platform is a web application designed to provide real-t
 ### Project Structure
 
 - **app.py**: The main entry point of the application. It sets up the navigation and page configuration.
+
 - **views/dashboard.py**: Contains the code for the dashboard page, which provides an overview of the disaster-related data.
 - **views/affected_areas.py**: Contains the code for visualizing affected areas using GeoJSON data.
 - **views/visualizations.py**: Contains various visualizations related to disaster data.
 - **views/donations.py**: Tracks and displays donation information.
 - **views/chatbot.py**: Implements a chatbot for user interaction.
 - **views/sos.py**: Displays SOS messages and related information.
-
-### Purpose of Each Python File
 
 ### Purpose of Each Python File
 
