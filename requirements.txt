@@ -1,0 +1,16 @@
+streamlit
+requests
+folium
+python-dotenv
+streamlit_folium
+selenium
+datetime
+huggingface-hub
+langchain-community
+langchain
+plotly
+ibmcloudant
+ibm-watson
+ibm-cloud
+firebase-admin
+pandas
