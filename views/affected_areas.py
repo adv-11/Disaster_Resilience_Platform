@@ -83,7 +83,7 @@ def get_latest_news(query):
 # --------------------------------------------------------------------------------------------------------------
 # --------------------------------------------- PAGE CONFIGURATION ---------------------------------------------
 
-st.title("🗺️ Global Affected Areas")
+st.title("🗺️ Global Disaster Affected Areas")
 st.markdown("---")
 
 m = folium.Map(location=[20.0, 0.0], zoom_start=2)
@@ -106,6 +106,7 @@ else:
 st_folium(m, width="100%", height=500 , key="affected_areas_map")
 
 
+
 #Fetch latest news about California fires
 st.markdown("---")
 st.markdown("### 📰 Latest News About California Fires")
@@ -113,16 +114,53 @@ st.markdown("### 📰 Latest News About California Fires")
 st.info("Fetching and summarizing LA Wildfires news...")
 
 news_articles = get_latest_news("California fires")
-news_articles = news_articles[:10]  # Display only the first 10 articles
+
+if 'news_count' not in st.session_state:
+    st.session_state.news_count = 3
 
 if news_articles:
     st.success("News fetched successfully!")
-    for article in news_articles:
+    for article in news_articles[:st.session_state.news_count]:
         title = article['title']
         description = article['description']
         url = article['url']
         st.markdown(f"- [{title}]({url})")
         st.write(description)
+
+    if len(news_articles) > st.session_state.news_count:
+        if st.button("See more"):
+            st.session_state.news_count += 3
+            st.rerun()
+
+
+
+# Search for more news
+st.markdown("---")
+query = st.text_input("Search for more news:")
+
+if st.button("Search"):
+    if query:
+        st.session_state.query = query
+        st.session_state.more_news_articles = get_latest_news(query)
+        st.session_state.more_news_count = 3
+
+if 'query' in st.session_state and 'more_news_articles' in st.session_state:
+    more_news_articles = st.session_state.more_news_articles
+    if more_news_articles:
+        st.success("News fetched successfully!")
+        for article in more_news_articles[:st.session_state.more_news_count]:
+            title = article['title']
+            description = article['description']
+            url = article['url']
+            st.markdown(f"- [{title}]({url})")
+            st.write(description)
+
+        if len(more_news_articles) > st.session_state.more_news_count:
+            if st.button("See more", key="more_news"):
+                st.session_state.more_news_count += 3
+                st.rerun()
+    else:
+        st.error("No news articles found for the given query.")
 
 
 

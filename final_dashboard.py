@@ -364,8 +364,7 @@ elif page == "Dashboard":
 
 
 elif page == "Visualization":
-    st.title("Data Visualization")
-    st.markdown("---")
+    st.title("Analytics and Visualization")
 
     # Pie Chart Visualization
     st.subheader("Pie Chart: Acres Burned by County")
