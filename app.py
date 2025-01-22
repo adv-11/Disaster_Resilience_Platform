@@ -30,12 +30,17 @@ chatbot = st.Page (
     title="Resilio Chatbot", 
     icon="🤖"
 )
+sos = st.Page (
+    page='views/sos.py',
+    title="SOS Messages", 
+    icon="🚨"
+)
 
 st.set_page_config(layout="wide")
 st._config.set_option(f'theme.base', "light")
 
 #Navigation bar
-pg = st.navigation(pages=[dashboard, donations, affected_areas, visualizations, chatbot])
+pg = st.navigation(pages=[dashboard, donations, affected_areas, visualizations, chatbot, sos])
 
 st.sidebar.text("Navigation")
 
