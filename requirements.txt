@@ -11,6 +11,6 @@ langchain
 plotly
 ibmcloudant
 ibm-watson
-ibm-cloud
+ibmcloud
 firebase-admin
 pandas
