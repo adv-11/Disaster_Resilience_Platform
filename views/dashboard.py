@@ -230,11 +230,7 @@ with col2:
     st.write(f"- **Goal Amount:** ${goal_amount}")
     st.write(f"- **Number of Donations:** {len(donations)}")
     st.write(f"- **Goal Achieved:** {total_donations / goal_amount:.2%}")
-<<<<<<< HEAD
     #st.write(f"- **Top Donor:** {max(donations, key=lambda x: x['amount'])['name'] if donations else 'N/A'}")
-=======
-    # st.write(f"- **Top Donor:** {max(donations, key=lambda x: x['amount'])['name'] if donations else 'N/A'}")
->>>>>>> 30c15c8727ae6cea1464f203876e6f04174b55ff
 
     
     
