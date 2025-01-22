@@ -263,12 +263,8 @@ if page == "Donation Page":
             st.error("Please fill in all required fields.")
 
 elif page == "Dashboard":
-<<<<<<< HEAD
-    st.title("Disaster Resilience Platform")
-=======
     st.title("🌎 Global Disasters Dashboard")
     st.markdown("---")
->>>>>>> a60c2cf84d84a3668b135f36f47233d56d23bdd3
 
     # Divide the page into 4 blocks
     col1, col2 = st.columns(2)
@@ -368,12 +364,8 @@ elif page == "Dashboard":
 
 
 elif page == "Visualization":
-<<<<<<< HEAD
-    st.title("Analytics and Visualization")
-=======
     st.title("Data Visualization")
     st.markdown("---")
->>>>>>> a60c2cf84d84a3668b135f36f47233d56d23bdd3
 
     # Pie Chart Visualization
     st.subheader("Pie Chart: Acres Burned by County")
