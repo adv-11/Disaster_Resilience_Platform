@@ -34,7 +34,6 @@ chatbot = st.Page (
 st.set_page_config(layout="wide")
 st._config.set_option(f'theme.base', "light")
 
-
 #Navigation bar
 pg = st.navigation(pages=[dashboard, donations, affected_areas, visualizations, chatbot])
 

@@ -158,6 +158,7 @@ def clean_html(text):
     return re.sub(clean, "", text)
 
 # Function to analyze text and extract keywords
+@st.cache_data
 def analyze_summary(title, text):
     try:
         response = nlu.analyze(
@@ -235,6 +236,7 @@ with col2:
     
 
 # Section 3: Latest News (Bottom Left)
+
 with col3:
     st.header("📰 LA Wildfires News Summary")
 
@@ -285,6 +287,7 @@ with col3:
 
 # Section 4: Contact Information (Bottom Right)
 with col4:
+
     st.header("📞 Emergengy Contacts")
 
     st.write("""
