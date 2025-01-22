@@ -23,19 +23,20 @@ load_dotenv()
 
 
 # IBM Cloudant Credentials
-CLOUDANT_API_KEY = os.environ.get("CLOUDANT_API_KEY")
-CLOUDANT_URL = os.environ.get("CLOUDANT_URL")
-CLOUDANT_DB_NAME = os.environ.get("CLOUDANT_DB_NAME")
+CLOUDANT_API_KEY = os.environ.get("CLOUDANT_API_KEY") or st.secrets["CLOUDANT_API_KEY"]
+CLOUDANT_URL = os.environ.get("CLOUDANT_URL") or st.secrets["CLOUDANT_URL"]
+CLOUDANT_DB_NAME = os.environ.get("CLOUDANT_DB_NAME") or st.secrets["CLOUDANT_DB_NAME"]
 authenticator = IAMAuthenticator(CLOUDANT_API_KEY)
 client = CloudantV1(authenticator=authenticator)
 client.set_service_url(CLOUDANT_URL)
 
+
 # IBM Watson NLU Credentials
-NLU_API_KEY = os.environ.get("NLU_API_KEY")
-NLU_URL = os.environ.get("NLU_URL")
+NLU_API_KEY = os.environ.get("NLU_API_KEY") or st.secrets["NLU_API_KEY"]
+NLU_URL = os.environ.get("NLU_URL") or st.secrets["NLU_URL"]
 
 # Fetch real-time data using News API
-NEWS_API_KEY = os.environ.get("NEWS_API_KEY")
+NEWS_API_KEY = os.environ.get("NEWS_API_KEY") or st.secrets["NEWS_API_KEY"]
 
 # Function to download the latest GeoJSON file using Selenium
 def download_geojson(url, download_dir):

@@ -14,8 +14,10 @@ from langchain.vectorstores import FAISS
 from langchain.chains import RetrievalQA
 from langchain.llms import HuggingFaceEndpoint 
 
+
+
 # Load environment variables
-HF_TOKEN = os.getenv('HF_TOKEN')
+HF_TOKEN = os.getenv('HF_TOKEN') or st.secrets["HF_TOKEN"]
 
 # Initialize Streamlit app
 

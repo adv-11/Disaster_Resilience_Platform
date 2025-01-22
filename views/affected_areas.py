@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 
 load_dotenv()
 
-NEWS_API_KEY = os.getenv("NEWS_API_KEY")
+NEWS_API_KEY = os.getenv("NEWS_API_KEY") or st.secrets["NEWS_API_KEY"]
 
 # Function to download the latest GeoJSON file using Selenium
 @st.cache_data

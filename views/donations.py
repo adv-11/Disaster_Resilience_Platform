@@ -5,9 +5,9 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 
 # IBM Cloudant Credentials
-CLOUDANT_API_KEY = os.environ.get("CLOUDANT_API_KEY")
-CLOUDANT_URL = os.environ.get("CLOUDANT_URL")
-CLOUDANT_DB_NAME = os.environ.get("CLOUDANT_DB_NAME")
+CLOUDANT_API_KEY = os.environ.get("CLOUDANT_API_KEY") or st.secrets["CLOUDANT_API_KEY"]
+CLOUDANT_URL = os.environ.get("CLOUDANT_URL") or st.secrets["CLOUDANT_URL"]
+CLOUDANT_DB_NAME = os.environ.get("CLOUDANT_DB_NAME") or st.secrets["CLOUDANT_DB_NAME"]
 authenticator = IAMAuthenticator(CLOUDANT_API_KEY)
 client = CloudantV1(authenticator=authenticator)
 client.set_service_url(CLOUDANT_URL)
