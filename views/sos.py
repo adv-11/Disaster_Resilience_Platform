@@ -47,6 +47,7 @@ def plot_map(data):
 # --------------------------------------------- PAGE CONFIGURATION ---------------------------------------------
 
 st.title("🚨 Real-time SOS Messages")
+st.subheader('Real time SOS messages from the Android Application')
 st.markdown("---")
 
 # Fetch the latest SOS data from Firebase
