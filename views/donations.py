@@ -31,7 +31,7 @@ if st.button("Donate"):
             donation_document = {
                 "name": name,
                 "email": email,
-                "amunt": amount,
+                "amount": amount,
                     "comment": comment
             }
             client.post_document(db=CLOUDANT_DB_NAME, document=donation_document)
