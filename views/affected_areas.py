@@ -17,6 +17,7 @@ load_dotenv()
 NEWS_API_KEY = os.getenv("NEWS_API_KEY")
 
 # Function to download the latest GeoJSON file using Selenium
+@st.cache_data
 def download_geojson(url, download_dir):
     options = webdriver.ChromeOptions()
     prefs = {"download.default_directory": download_dir}
@@ -44,6 +45,7 @@ def fetch_disaster_data(filepath):
     return data
 
 # Function to filter entries from the last 3 months
+@st.cache_data
 def filter_recent_entries(entries, months=3):
     recent_entries = []
     now = datetime.now()
@@ -72,6 +74,8 @@ def plot_disaster_events(m, disaster_data):
             folium.Marker([lat, lon], popup=popup_text).add_to(m)     
 
 # Function to get latest news about California fires
+
+@st.cache_data
 def get_latest_news(query):
     url = f"https://newsapi.org/v2/everything?q={query}&apiKey={NEWS_API_KEY}"
     response = requests.get(url)
