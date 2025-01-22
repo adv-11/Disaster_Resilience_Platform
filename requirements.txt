@@ -2,15 +2,13 @@ streamlit
 requests
 folium
 python-dotenv
-streamlit_folium
+streamlit-folium
 selenium
-datetime
 huggingface-hub
 langchain-community
 langchain
 plotly
 ibmcloudant
 ibm-watson
-ibmcloud
 firebase-admin
 pandas
